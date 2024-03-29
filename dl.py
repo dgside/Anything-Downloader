@@ -43,7 +43,7 @@ class VideoDownloaderApp:
         self.control_frame.pack(pady=(5, 5), padx=(5, 5), fill='x')
 
     def create_url_entry(self):
-        self.url_entry = ttk.Entry(self.url_frame, width=50)
+        self.url_entry = ttk.Entry(self.url_frame, width=50, justify='center')  # Added justify option here
         self.url_entry.pack(padx=10, pady=10)
         self.url_entry_var = tk.StringVar()
         self.url_entry["textvariable"] = self.url_entry_var
@@ -51,8 +51,9 @@ class VideoDownloaderApp:
         self.create_right_click_menu(self.url_entry)
         self.url_entry.bind("<Button-3>", self.show_right_click_menu)
 
-        self.video_title_label = ttk.Label(self.url_frame, text="", foreground="white")
-        self.video_title_label.pack(pady=(5, 5))
+        self.video_title_label = ttk.Label(self.url_frame, text="", foreground="white", wraplength=300)
+        self.video_title_label.pack(padx=(10, 10), pady=(5, 5))
+
 
     def create_options(self):
         self.audio_only_var = tk.IntVar()
