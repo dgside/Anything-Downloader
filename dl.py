@@ -221,11 +221,11 @@ class VideoDownloaderApp:
 
     def format_by_quality(self, quality, audio_only):
         if audio_only:
-            return 'bestaudio/best'
+            return 'bestaudio[ext=webm]/bestaudio/best'
         return {
-            "Default (1080p)": 'bestvideo[height<=1080]+bestaudio/best[height<=1080]',
-            "High (1440p)": 'bestvideo[height<=1440]+bestaudio/best[height<=1440]',
-            "4K (2160p)": 'bestvideo[height<=2160]+bestaudio/best[height<=2160]'
+            "Default (1080p)": 'bestvideo[height<=1080][ext=webm]+bestaudio[ext=webm]/best[height<=1080]',
+            "High (1440p)": 'bestvideo[height<=1440][ext=webm]+bestaudio[ext=webm]/best[height<=1440]',
+            "4K (2160p)": 'bestvideo[height<=2160][ext=webm]+bestaudio[ext=webm]/best[height<=2160]'
         }[quality]
 
     def output_template(self, audio_only):
