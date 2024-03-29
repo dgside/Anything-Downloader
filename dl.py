@@ -51,7 +51,7 @@ class VideoDownloaderApp:
         self.create_right_click_menu(self.url_entry)
         self.url_entry.bind("<Button-3>", self.show_right_click_menu)
 
-        self.video_title_label = ttk.Label(self.url_frame, text="", foreground="white", wraplength=300)
+        self.video_title_label = ttk.Label(self.url_frame, text="", foreground="white", wraplength=500)
         self.video_title_label.pack(padx=(10, 10), pady=(5, 5))
 
 
@@ -110,11 +110,11 @@ class VideoDownloaderApp:
 
     def create_control_buttons(self):
         self.download_button = ttk.Button(self.control_frame, text="Download", command=self.start_download)
-        self.download_button.pack(side='left', padx=(10, 5), pady=(10, 10), expand=False)
+        self.download_button.pack(side='top', padx=(10, 5), pady=(10, 10), expand=False)
 
     def create_progress_bar(self):
-        self.progress = ttk.Progressbar(self.control_frame, length=200, mode='determinate', maximum=100)
-        self.progress.pack(padx=10, pady=10, fill='x', expand=True)
+        self.progress = ttk.Progressbar(self.control_frame, length=100, mode='determinate', maximum=100)
+        self.progress.pack(side='bottom', padx=10, pady=(0, 10), fill='x', expand=True)
 
     def create_status_label(self):
         self.status_label = ttk.Label(self.control_frame, text="")
