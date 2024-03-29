@@ -56,8 +56,9 @@ class VideoDownloaderApp:
 
     def create_options(self):
         self.audio_only_var = tk.IntVar()
-        audio_only_checkbox = ttk.Checkbutton(self.options_frame, text="Audio Only", variable=self.audio_only_var)
+        audio_only_checkbox = ttk.Checkbutton(self.options_frame, text="Audio Only", variable=self.audio_only_var, command=self.toggle_quality_buttons)
         audio_only_checkbox.pack(side='left', padx=(10, 20))
+
         self.quality_var = tk.StringVar(value=self.quality_options[0])
         style = ttk.Style(self.root)
         style.configure('Default.TButton', foreground='#baffc9')
@@ -81,6 +82,18 @@ class VideoDownloaderApp:
 
         # Initially set default quality button as selected
         self.set_quality("Default (1080p)")
+
+    def toggle_quality_buttons(self):
+        if self.audio_only_var.get() == 1:  # If Audio Only is selected
+            # Disable quality buttons
+            self.default_quality_button['state'] = 'disabled'
+            self.high_quality_button['state'] = 'disabled'
+            self.ultra_quality_button['state'] = 'disabled'
+        else:
+            # Enable quality buttons
+            self.default_quality_button['state'] = 'normal'
+            self.high_quality_button['state'] = 'normal'
+            self.ultra_quality_button['state'] = 'normal'    
 
     def set_quality(self, quality):
         self.quality_var.set(quality)
