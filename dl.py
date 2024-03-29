@@ -7,9 +7,6 @@ import os
 import subprocess
 import platform
 
-
-from ttkthemes import ThemedTk
-
 class VideoDownloaderApp:
     quality_options = ["Default (1080p)", "High (1440p)", "4K (2160p)"]
 
@@ -61,11 +58,41 @@ class VideoDownloaderApp:
         self.audio_only_var = tk.IntVar()
         audio_only_checkbox = ttk.Checkbutton(self.options_frame, text="Audio Only", variable=self.audio_only_var)
         audio_only_checkbox.pack(side='left', padx=(10, 20))
-
         self.quality_var = tk.StringVar(value=self.quality_options[0])
-        self.quality_menu = ttk.OptionMenu(self.options_frame, self.quality_var, self.quality_options[0], *self.quality_options)
-        self.quality_menu.pack(side='right', padx=(10, 20), pady=(10, 10))
-        self.quality_menu.config(width=len(self.quality_options[0]))
+        style = ttk.Style(self.root)
+        style.configure('Default.TButton', foreground='#baffc9')
+        style.configure('High.TButton', foreground='#ffdfba')
+        style.configure('Ultra.TButton', foreground='#ffb3ba')
+
+        # Create a frame within the options frame to hold the quality buttons
+        self.quality_buttons_frame = ttk.Frame(self.options_frame)
+        self.quality_buttons_frame.pack(side='right', padx=(10, 20), pady=(10, 10))
+
+        # Create buttons for each quality option
+        self.default_quality_button = ttk.Button(self.quality_buttons_frame, text="Default (1080p)", style='Default.TButton', command=lambda: self.set_quality("Default (1080p)"))
+        self.default_quality_button.pack(side='left', padx=(0, 5))
+
+        self.high_quality_button = ttk.Button(self.quality_buttons_frame, text="High (1440p)", style='High.TButton', command=lambda: self.set_quality("High (1440p)"))
+        self.high_quality_button.pack(side='left', padx=5)
+
+        self.ultra_quality_button = ttk.Button(self.quality_buttons_frame, text="4K (2160p)", style='Ultra.TButton', command=lambda: self.set_quality("4K (2160p)"))
+        self.ultra_quality_button.pack(side='left', padx=(5, 0))
+
+
+        # Initially set default quality button as selected
+        self.set_quality("Default (1080p)")
+
+    def set_quality(self, quality):
+        self.quality_var.set(quality)
+        # Update button states to reflect current selection
+        for button in [self.default_quality_button, self.high_quality_button, self.ultra_quality_button]:
+            button.state(['!alternate'])  # Reset the state
+        if quality == "Default (1080p)":
+            self.default_quality_button.state(['alternate'])
+        elif quality == "High (1440p)":
+            self.high_quality_button.state(['alternate'])
+        elif quality == "4K (2160p)":
+            self.ultra_quality_button.state(['alternate'])   
 
     def create_control_buttons(self):
         self.download_button = ttk.Button(self.control_frame, text="Download", command=self.start_download)
