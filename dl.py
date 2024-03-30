@@ -3,9 +3,6 @@ from tkinter import messagebox, ttk
 import sv_ttk
 from yt_dlp import YoutubeDL
 import threading
-import os
-import subprocess
-import platform
 
 class VideoDownloaderApp:
     quality_options = ["Default (1080p)", "High (1440p)", "4K (2160p)"]
