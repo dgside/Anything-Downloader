@@ -14,6 +14,7 @@ class VideoDownloaderApp:
         self.root = root
         sv_ttk.set_theme("dark")
         self.failed_videos = []
+        self.download_completed = False
         self.setup_ui()
 
     # ----------------- UI Setup Methods ----------------- #
@@ -176,6 +177,7 @@ class VideoDownloaderApp:
         quality = self.quality_var.get()
         ydl_opts = self.get_download_options(audio_only, quality)
         ydl_opts['progress_hooks'] = [self.progress_hook]
+        self.download_completed = False
 
         with YoutubeDL(ydl_opts) as ydl:
             try:
@@ -188,13 +190,17 @@ class VideoDownloaderApp:
 
     def progress_hook(self, d):
         if d['status'] == 'finished':
-            self.root.after(0, lambda: self.status_label.config(text="Download finished"))
-        elif d['status'] == 'downloading':
+            # Set the flag when the download step completes
+            self.download_completed = True
+            self.root.after(0, lambda: self.status_label.config(text="Download Finished"))
+        elif d['status'] == 'downloading' and not self.download_completed:
             bytes_downloaded = d['downloaded_bytes']
             bytes_total = d.get('total_bytes') or d.get('total_bytes_estimate')
             if bytes_total:
                 percentage = int(bytes_downloaded / bytes_total * 100)
-                self.root.after(0, lambda: (self.progress.config(value=percentage), self.status_label.config(text=f"Downloading... {percentage}%")))
+                # Only update progress bar and status label if download is not complete
+                if percentage < 100:
+                    self.root.after(0, lambda: (self.progress.config(value=percentage), self.status_label.config(text=f"Downloading... {percentage}%")))
 
     def finalize_download(self):
         self.progress['value'] = 100
